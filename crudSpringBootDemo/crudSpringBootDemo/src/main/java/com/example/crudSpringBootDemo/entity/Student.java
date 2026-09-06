@@ -15,10 +15,7 @@ public class Student {
     private String email;
     private int rollNo;
     private String subject;
-
-    // Constructors
-    public Student() {
-    }
+    private Boolean isDeleted;
 
     public Student(String name, int age, String email, int rollNo, String subject) {
         this.name = name;
@@ -26,6 +23,10 @@ public class Student {
         this.email = email;
         this.rollNo = rollNo;
         this.subject = subject;
+        this.isDeleted = false;
+    }
+
+    public Student() {
     }
 
     // Getters and Setters
@@ -76,5 +77,13 @@ public class Student {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.isDeleted = deleted;
     }
 }
