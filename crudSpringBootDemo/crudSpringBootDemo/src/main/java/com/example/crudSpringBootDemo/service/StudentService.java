@@ -2,6 +2,7 @@ package com.example.crudSpringBootDemo.service;
 
 import com.example.crudSpringBootDemo.dto.StudentRequestDto;
 import com.example.crudSpringBootDemo.dto.StudentResponseDto;
+import com.example.crudSpringBootDemo.dto.UpdateStudentRequestDto;
 import com.example.crudSpringBootDemo.entity.Student;
 import com.example.crudSpringBootDemo.repository.StudentRepository;
 import org.springframework.stereotype.Service;
@@ -23,25 +24,30 @@ public class StudentService {
         return mapToDto(studentResp);
     }
 
-    public Student getStudent(Long id) {
+    public StudentResponseDto getStudent(Long id) {
 
-        return studentRepository.findByIdAndIsDeletedFalse(id).orElse(null);
+        Student studentResp = studentRepository.findByIdAndIsDeletedFalse(id).orElse(null);
+        if (studentResp != null) {
+            return mapToDto(studentResp);
+        }
+        return null;
     }
 
-    public List<Student> getAllStudents() {
-        return studentRepository.findAllByIsDeletedFalse();
+    public List<StudentResponseDto> getAllStudents() {
+        return studentRepository.findAllByIsDeletedFalse().stream().map(this::mapToDto).collect(java.util.stream.Collectors.toList());
     }
 
-    public Student updateStudent(Long id, Student studentDetails) {
+    public StudentResponseDto updateStudent(Long id, UpdateStudentRequestDto studentDetails) {
         Student existingStudent = studentRepository.findByIdAndIsDeletedFalse(id).orElse(null);
         if (existingStudent != null) {
             existingStudent.setName(studentDetails.getName());
-            existingStudent.setEmail(studentDetails.getEmail());
             existingStudent.setAge(studentDetails.getAge());
             existingStudent.setRollNo(studentDetails.getRollNo());
             existingStudent.setSubject(studentDetails.getSubject());
             existingStudent.setDeleted(false);
-            return studentRepository.save(existingStudent);
+            existingStudent.setUpdatedAt(LocalDateTime.now());
+            Student updatedStudent = studentRepository.save(existingStudent);
+            return mapToDto(updatedStudent);
         }
         return null;
     }
