@@ -1,9 +1,6 @@
 package com.example.crudSpringBootDemo.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.*;
 
 public class StudentRequestDto {
     @NotBlank(message = "Name is mandatory")
@@ -12,7 +9,7 @@ public class StudentRequestDto {
     private int age;
     @Email(message = "Email should be valid")
     private String email;
-    @NotEmpty(message = "Roll number is mandatory")
+    @NotNull(message = "Roll number is mandatory")
     private int rollNo;
     @NotBlank(message = "Subject is mandatory")
     private String subject;

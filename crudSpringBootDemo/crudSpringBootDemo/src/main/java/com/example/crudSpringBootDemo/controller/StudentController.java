@@ -22,52 +22,38 @@ public class StudentController {
     }
 
     //create
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<StudentResponseDto> createStudent(@Valid @RequestBody StudentRequestDto student) {
         StudentResponseDto createdStudent = studentService.createStudent(student);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdStudent);
     }
     //read
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<StudentResponseDto> getStudent(@PathVariable Long id) {
         StudentResponseDto student = studentService.getStudent(id);
-        if (student != null) {
-            return ResponseEntity.ok(student);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(student);
+
     }
-    @GetMapping("/getAll")
+    @GetMapping
     public ResponseEntity<List<StudentResponseDto>> getAllStudents(){
         return ResponseEntity.ok(studentService.getAllStudents());
     }
     //update
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<StudentResponseDto> updateStudent(@PathVariable Long id, @RequestBody UpdateStudentRequestDto student) {
         StudentResponseDto studentResp = studentService.updateStudent(id, student);
-        if (studentResp == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(studentResp);
     }
     //delete
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteStudent(@PathVariable Long id) {
-        Boolean isDeleted = studentService.deleteStudent(id);
-        if (isDeleted) {
-            return ResponseEntity.ok("Student deleted successfully");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        studentService.deleteStudent(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/soft-delete/{id}")
     public ResponseEntity<String> deleteStudentSoft(@PathVariable Long id) {
-        Boolean isDeleted = studentService.deleteStudentSoft(id);
-        if (isDeleted) {
-            return ResponseEntity.ok("Student soft deleted successfully");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+       studentService.deleteStudentSoft(id);
+       return ResponseEntity.noContent().build();
     }
 }
